@@ -6,11 +6,14 @@ float F4 =349;
 float G4 =392;
 float AA4 = 440.0;
 float B4 =494;
+float C5 = 524;
 float D5 =588;
 float E5 =659;
 float F5 =698;
 
 int buzzer = 11;
+
+int quatern = 500;
 
 
 void setup() {
@@ -18,44 +21,55 @@ void setup() {
 }
 
 void loop() {
-  tone(buzzer,D4,1000);
-  delay(500);
+
+  // papapaaa papapaaa aahh section 
+
+  tone(buzzer,D4, quatern);
+  delay(400);
   noTone(buzzer);
-  tone(buzzer,F4,1000);
-  delay(500);
+  tone(buzzer,F4, quatern);
+  delay(400);
   noTone(buzzer);
-  tone(buzzer,D5,4000);
-  delay(500);
+  tone(buzzer,D5, quatern*4);
+  delay(400);
   noTone(buzzer); 
   
-  tone(buzzer,D4,1000);
-  delay(500);
+  tone(buzzer,D4,quatern);
+  delay(400);
   noTone(buzzer);
-  tone(buzzer,F4,1000);
-  delay(500);
+  tone(buzzer,F4,quatern);
+  delay(400);
   noTone(buzzer);
-  tone(buzzer,D5,4000);
-  delay(500);
-  noTone(buzzer);
-
-  tone(buzzer,E5, 3000);
-  delay(500);
-  noTone(buzzer);
-  tone(buzzer,F5,1000);
-  delay(500);
-  noTone(buzzer);
-  tone(buzzer,E5, 1000);
-  delay(500);
-  noTone(buzzer);
-  tone(buzzer,F5, 1000);
-  delay(500);
+  tone(buzzer,D5,quatern*4);
+  delay(400);
   noTone(buzzer);
 
-  tone(buzzer,E5, 1000);
+  //pipipipi section
+
+  tone(buzzer,E5, quatern*2);
   delay(500);
   noTone(buzzer);
-  tone(buzzer,E5, 1000);
-  delay(500);
+  tone(buzzer,F5,quatern);
+  delay(250);
   noTone(buzzer);
+  tone(buzzer,E5, quatern);
+  delay(250);
+  noTone(buzzer);
+  tone(buzzer,F5, quatern);
+  delay(250);
+  noTone(buzzer);
+
+  //bajada section
+
+  tone(buzzer,E5, quatern);
+  delay(400);
+  noTone(buzzer);
+  tone(buzzer,C5, quatern);
+  delay(400);
+  noTone(buzzer);
+  tone(buzzer,A4, quatern*4);
+  delay(400);
+
+ //relief section
 
 }
