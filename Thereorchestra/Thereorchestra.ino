@@ -11,7 +11,7 @@ float D5 =588;
 float E5 =659;
 float F5 =698;
 
-int buzzer = 11;
+int buzzer = 10;
 
 int quatern = 500;
 
