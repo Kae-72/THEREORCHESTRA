@@ -16,60 +16,21 @@ int buzzer = 10;
 int quatern = 500;
 
 
+
 void setup() {
   pinMode(buzzer, OUTPUT);
+  pinMode(A0, INPUT);
+  Serial.begin(9600);
+
 }
 
 void loop() {
 
-  // papapaaa papapaaa aahh section 
+  int sensor1value= analogRead(A0);
 
-  tone(buzzer,D4, quatern);
-  delay(400);
-  noTone(buzzer);
-  tone(buzzer,F4, quatern);
-  delay(400);
-  noTone(buzzer);
-  tone(buzzer,D5, quatern*4);
-  delay(400);
-  noTone(buzzer); 
-  
-  tone(buzzer,D4,quatern);
-  delay(400);
-  noTone(buzzer);
-  tone(buzzer,F4,quatern);
-  delay(400);
-  noTone(buzzer);
-  tone(buzzer,D5,quatern*4);
-  delay(400);
-  noTone(buzzer);
+  Serial.print("sensor1value: ");
+  Serial.println(sensor1value);
 
-  //pipipipi section
-
-  tone(buzzer,E5, quatern*2);
-  delay(500);
-  noTone(buzzer);
-  tone(buzzer,F5,quatern);
-  delay(250);
-  noTone(buzzer);
-  tone(buzzer,E5, quatern);
-  delay(250);
-  noTone(buzzer);
-  tone(buzzer,F5, quatern);
-  delay(250);
-  noTone(buzzer);
-
-  //bajada section
-
-  tone(buzzer,E5, quatern);
-  delay(400);
-  noTone(buzzer);
-  tone(buzzer,C5, quatern);
-  delay(400);
-  noTone(buzzer);
-  tone(buzzer,A4, quatern*4);
-  delay(400);
-
- //relief section
+  delay(100);
 
 }
