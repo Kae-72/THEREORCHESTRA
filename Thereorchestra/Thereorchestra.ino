@@ -11,62 +11,108 @@ int NOTE_C5 = 523;
 //NOTES
 
 
+const int N = 400;
+int buffer[N];
+int indexBuffer = 0;
+long addup = 0;
+bool full = false;
+
 int buzzer = 10;
 
 void setup() {
 
   pinMode(buzzer, OUTPUT);
   pinMode(A0, INPUT);
+  pinMode(A1, INPUT)
   Serial.begin(9600);
 
 }
 
 void loop() {
 
-  int sensor1value= analogRead(A0);
-  delay(200)
+  //SENSOR 1 (pitch changer)
+  int sensor1valueAVG = analogRead(A0);
 
-  Serial.print("sensor1value: ");
-  Serial.println(sensor1value);
+  // if (full) {
+  //   addup -= buffer[indexBuffer];
+  // }
 
-  int OCTAVER = 1;
+  // buffer[indexBuffer] = sensor1valueAVG;
 
-  if (sensor1value >= 600){
+  // addup += sensor1valueAVG;
+
+  // indexBuffer = (indexBuffer + 1) % N;
+
+  // if (indexBuffer == 0) {
+  //   full = true;
+  // }
+
+  // if (full) {
+  //   float promedio = addup / (float)N;
+
+
+  Serial.print("sensor1value average: ");
+  Serial.println(sensor1valueAVG);
+  //}
+  //SENSOR 1 (pitch changer)
+
+  //SENSOR 2 (octave changer)
+  int sensor2value = analogRead(A1)
+
+  Serial.print("sensor2value average: ");
+  Serial.printIn(sensor2value);
+  //SENSOR 2 (octave changer)
+
+  delay(200);
+
+//OCTAVE CHANGER----------------------------------------------------------------------------------------------------------------------------------//
+  if (sensor2value >= 500) {
+    OCTAVER = 1
+    pinMode(buzzer, OUTPUT);
+  }
+  else if (sensor2value >= 300) {
+    OCTAVER = 2
+    pinMode(buzzer, OUTPUT);
+  }
+  else if (sensor2value >= 100) {
+    OCTAVER = 4
+    pinMode(buzzer, OUTPUT);
+  }
+  else {
+    OCTAVER = 0
+    pinMode(buzzer, INPUT);
+  } 
+// possibly rearrange the values needed
+
+//PITCH CHANGER----------------------------------------------------------------------------------------------------------------------------------//
+  if (sensor1valueAVG >= 600) {
     int CURRENT_NOTE = NOTE_C4 * OCTAVER;
     tone(buzzer, CURRENT_NOTE);
-  }
-  else if (600 > sensor1value >= 517){
+  } else if (sensor1valueAVG >= 517) {
     int CURRENT_NOTE = NOTE_D4 * OCTAVER;
     tone(buzzer, CURRENT_NOTE);
-  }
-  else if (517 > sensor1value >= 434){
+  } else if (sensor1valueAVG >= 434) {
     int CURRENT_NOTE = NOTE_E4 * OCTAVER;
     tone(buzzer, CURRENT_NOTE);
-  }
-
-  if (434 > sensor1value >= 351){
+  } else if (sensor1valueAVG >= 351) {
     int CURRENT_NOTE = NOTE_F4 * OCTAVER;
     tone(buzzer, CURRENT_NOTE);
-  }
-
-  if (351 > sensor1value >= 268){
+  } else if (sensor1valueAVG >= 268) {
     int CURRENT_NOTE = NOTE_G4 * OCTAVER;
     tone(buzzer, CURRENT_NOTE);
-  }
-
-  if (268 > sensor1value >= 185){
+  } else if (sensor1valueAVG >= 185) {
     int CURRENT_NOTE = NOTE_A4 * OCTAVER;
     tone(buzzer, CURRENT_NOTE);
-  }
-
-  if (185 > sensor1value >= 102){
+  } else if (sensor1valueAVG >= 100) {
     int CURRENT_NOTE = NOTE_B4 * OCTAVER;
     tone(buzzer, CURRENT_NOTE);
+  } else {
+    noTone(buzzer)
   }
 
-  if (102 > sensor1value){
-    int CURRENT_NOTE = NOTE_C5 * OCTAVER;
-    tone(buzzer, CURRENT_NOTE);
-  }
+  
 
 }
+
+
+
