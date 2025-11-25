@@ -41,9 +41,27 @@ void loop() {
   //SENSOR 1 (pitch changer)
   int sensor1valueAVG = analogRead(A0);
 
+
+  // if (full) {
+  //   addup -= buffer[indexBuffer];
+  // }
+
+  // buffer[indexBuffer] = sensor1valueAVG;
+
+  // addup += sensor1valueAVG;
+
+  // indexBuffer = (indexBuffer + 1) % N;
+
+  // if (indexBuffer == 0) {
+  //   full = true;
+  // }
+
+  // if (full) {
+  //   float promedio = addup / (float)N;
+
   Serial.print("sensor1value average: ");
   Serial.println(sensor1valueAVG);
-  
+  //}
   //SENSOR 1 (pitch changer)
 
   //SENSOR 2 (octave changer)
