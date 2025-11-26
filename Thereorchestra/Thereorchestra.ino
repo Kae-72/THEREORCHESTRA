@@ -10,45 +10,36 @@ int NOTE_B4 = 494;
 int NOTE_C5 = 523;
 //NOTES
 
-
 // const int N = 100;
 // int buffer[N];
 // int indexBuffer = 0;
 // long addup = 0;
 // bool full = false;
 
+int CURRENT_NOTE = 0;
+int QUARTER = 250;
 int OCTAVER = 0;
-int buzzer = 10;
+int BUZZER = 10;
 
 void setup() {
 
-  pinMode(buzzer, OUTPUT);
-  pinMode(A0, INPUT);
+  pinMode(BUZZER, OUTPUT);
   pinMode(A1, INPUT);
+  pinMode(A2, INPUT);
   Serial.begin(115200);
 
 }
 
 void loop() {
 
-  // if (OCTAVER = 0) {
-  //   pinMode(buzzer, INPUT);
-  // }
-  // else{
-  //   pinMode(buzzer, OUTPUT);
-  // }
-
-  //SENSOR 1 (pitch changer)
-  int sensor1valueAVG = analogRead(A0);
-
-
+//start of the buffer
   // if (full) {
   //   addup -= buffer[indexBuffer];
   // }
 
-  // buffer[indexBuffer] = sensor1valueAVG;
+  // buffer[indexBuffer] = sensor1value;
 
-  // addup += sensor1valueAVG;
+  // addup += sensor1value;
 
   // indexBuffer = (indexBuffer + 1) % N;
 
@@ -59,65 +50,81 @@ void loop() {
   // if (full) {
   //   float promedio = addup / (float)N;
 
-  Serial.print("sensor1value average: ");
-  Serial.println(sensor1valueAVG);
   //}
-  //SENSOR 1 (pitch changer)
+//end of the buffer
 
+  //SENSOR 1 (pitch changer)
+  int sensor1value = analogRead(A0);
   //SENSOR 2 (octave changer)
   int sensor2value = analogRead(A1);
 
-  Serial.print("sensor2value: ");
-  Serial.println(sensor2value);
-  //SENSOR 2 (octave changer)
-
-
+  String OCTAVE = "";
 //OCTAVE CHANGER----------------------------------------------------------------------------------------------------------------------------------//
   if (sensor2value >= 500) {
-    int OCTAVER = 1;
-    pinMode(buzzer, OUTPUT);
+    OCTAVER = 1;
+    OCTAVE = "4";
   }
   else if (sensor2value >= 300) {
-    int OCTAVER = 2;
-    pinMode(buzzer, OUTPUT);
+    OCTAVER = 2;
+    OCTAVE = "5";
   }
   else if (sensor2value >= 100) {
-    int OCTAVER = 4;
-    pinMode(buzzer, OUTPUT);
+    OCTAVER = 4;
+    OCTAVE = "6";
   }
   else {
-    int OCTAVER = 0;
+    OCTAVER = 0;
+    OCTAVE = "NO OCTAVE";
+    //CAMBIAR DESPUÉS A VACIO PARA LCD
   } 
 // possibly rearrange the values needed
 
+  String NOTE = "";
 //PITCH CHANGER----------------------------------------------------------------------------------------------------------------------------------//
-  if (sensor1valueAVG >= 600) {
-    int CURRENT_NOTE = NOTE_C4 * OCTAVER;
-    tone(buzzer, CURRENT_NOTE);
-  } else if (sensor1valueAVG >= 517) {
-    int CURRENT_NOTE = NOTE_D4 * OCTAVER;
-    tone(buzzer, CURRENT_NOTE);
-  } else if (sensor1valueAVG >= 434) {
-    int CURRENT_NOTE = NOTE_E4 * OCTAVER;
-    tone(buzzer, CURRENT_NOTE);
-  } else if (sensor1valueAVG >= 351) {
-    int CURRENT_NOTE = NOTE_F4 * OCTAVER;
-    tone(buzzer, CURRENT_NOTE);
-  } else if (sensor1valueAVG >= 268) {
-    int CURRENT_NOTE = NOTE_G4 * OCTAVER;
-    tone(buzzer, CURRENT_NOTE);
-  } else if (sensor1valueAVG >= 185) {
-    int CURRENT_NOTE = NOTE_A4 * OCTAVER;
-    tone(buzzer, CURRENT_NOTE);
-  } else if (sensor1valueAVG >= 100) {
-    int CURRENT_NOTE = NOTE_B4 * OCTAVER;
-    tone(buzzer, CURRENT_NOTE);
+  if (sensor1value <= 100) {
+    NOTE = "NO NOTE";
+    //CAMBIAR DESPUÉS A VACIO PARA LCD
+    pinMode(BUZZER, INPUT);
   } else {
-    noTone(buzzer);
+    pinMode(BUZZER, OUTPUT);
+    if (sensor1value >= 600) {
+      CURRENT_NOTE = NOTE_C4 * OCTAVER;
+      NOTE = "C";
+    } else if (sensor1value >= 517) {
+      CURRENT_NOTE = NOTE_D4 * OCTAVER;
+      NOTE = "D";
+    } else if (sensor1value >= 434) {
+      CURRENT_NOTE = NOTE_E4 * OCTAVER;
+      NOTE = "E";
+    } else if (sensor1value >= 351) {
+      CURRENT_NOTE = NOTE_F4 * OCTAVER;
+      NOTE = "F";
+    } else if (sensor1value >= 268) {
+      CURRENT_NOTE = NOTE_G4 * OCTAVER;
+      NOTE = "G";
+    } else if (sensor1value >= 185) {
+      CURRENT_NOTE = NOTE_A4 * OCTAVER;
+      NOTE = "A";
+    } else if (sensor1value >= 100) {
+      CURRENT_NOTE = NOTE_B4 * OCTAVER;
+      NOTE = "B";
+    }
+    tone(BUZZER,CURRENT_NOTE,QUARTER);
   }
+// possibly rearrange the values again
 
-  
+  Serial.print("sensor1value: ");
+  Serial.println(sensor1value);
+  Serial.print('\t');
+  Serial.print(NOTE);
+  Serial.print('\t');
+  Serial.print("sensor2value: ");
+  Serial.println(sensor2value);
+  Serial.print('\t');
+  Serial.print("OCTAVE: ");
+  Serial.println(OCTAVE);
 
+  delay (QUARTER*0.8);
 }
 
 
