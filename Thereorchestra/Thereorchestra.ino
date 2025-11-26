@@ -16,12 +16,16 @@ int NOTE_C5 = 523;
 // long addup = 0;
 // bool full = false;
 
+#include <LiquidCrystal.h>
+
+
 int CURRENT_NOTE = 0;
 int QUARTER = 250;
 int OCTAVER = 0;
 int BUZZER = 10;
 
 void setup() {
+
 
   pinMode(BUZZER, OUTPUT);
   pinMode(A1, INPUT);
@@ -54,21 +58,21 @@ void loop() {
 //end of the buffer
 
 //SENSOR 1 (pitch changer)
-  int sensor1value = analogRead(A0);
+  int sensor1value = analogRead(A1);
 //SENSOR 2 (octave changer)
-  int sensor2value = analogRead(A1);
+  int sensor2value = analogRead(A2);
 
   String OCTAVE = "";
 //OCTAVE CHANGER----------------------------------------------------------------------------------------------------------------------------------//
-  if (sensor2value >= 500) {
+  if (sensor2value >= 520) {
     OCTAVER = 1;
     OCTAVE = "4";
   }
-  else if (sensor2value >= 300) {
+  else if (sensor2value >= 320) {
     OCTAVER = 2;
     OCTAVE = "5";
   }
-  else if (sensor2value >= 100) {
+  else if (sensor2value >= 120) {
     OCTAVER = 4;
     OCTAVE = "6";
   }
@@ -90,22 +94,22 @@ void loop() {
     if (sensor1value >= 600) {
       CURRENT_NOTE = NOTE_C4 * OCTAVER;
       NOTE = "C";
-    } else if (sensor1value >= 517) {
+    } else if (sensor1value >= 500) {
       CURRENT_NOTE = NOTE_D4 * OCTAVER;
       NOTE = "D";
-    } else if (sensor1value >= 434) {
+    } else if (sensor1value >= 417) {
       CURRENT_NOTE = NOTE_E4 * OCTAVER;
       NOTE = "E";
-    } else if (sensor1value >= 351) {
+    } else if (sensor1value >= 334) {
       CURRENT_NOTE = NOTE_F4 * OCTAVER;
       NOTE = "F";
-    } else if (sensor1value >= 268) {
+    } else if (sensor1value >= 251) {
       CURRENT_NOTE = NOTE_G4 * OCTAVER;
       NOTE = "G";
-    } else if (sensor1value >= 185) {
+    } else if (sensor1value >= 168) {
       CURRENT_NOTE = NOTE_A4 * OCTAVER;
       NOTE = "A";
-    } else if (sensor1value >= 100) {
+    } else if (sensor1value >= 85) {
       CURRENT_NOTE = NOTE_B4 * OCTAVER;
       NOTE = "B";
     }
