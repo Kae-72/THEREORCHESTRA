@@ -53,9 +53,9 @@ void loop() {
   //}
 //end of the buffer
 
-  //SENSOR 1 (pitch changer)
+//SENSOR 1 (pitch changer)
   int sensor1value = analogRead(A0);
-  //SENSOR 2 (octave changer)
+//SENSOR 2 (octave changer)
   int sensor2value = analogRead(A1);
 
   String OCTAVE = "";
@@ -113,6 +113,7 @@ void loop() {
   }
 // possibly rearrange the values again
 
+//VALUES PRINTER-----------------------------------------------------------------------------------------------------------------------------------//
   Serial.print("sensor1value: ");
   Serial.println(sensor1value);
   Serial.print('\t');
@@ -123,6 +124,7 @@ void loop() {
   Serial.print('\t');
   Serial.print("OCTAVE: ");
   Serial.println(OCTAVE);
+// console to read the values 
 
   delay (QUARTER*0.8);
 }
