@@ -89,8 +89,8 @@ void setup() {
   pinMode(BUZZER, OUTPUT);
   pinMode(A1, INPUT);
   pinMode(A2, INPUT);
-  pinMode(BOTON_D, INPUT);
-  pinMode(BOTON_A, INPUT);
+  pinMode(BOTON_D, INPUT_PULLUP);
+  pinMode(BOTON_A, INPUT_PULLUP);
   Serial.begin(115200);
   digitalWrite(BOTON_D, LOW);
   digitalWrite(BOTON_A, LOW);
@@ -204,7 +204,7 @@ void loop() {
    DEBUG = false;
   };
 
-  while (DEBUG = true) {
+  while (DEBUG == true) {
     lcd.clear();
     lcd.setCursor(0,0);
     lcd.print("DEBUGGING WITH...");
@@ -290,7 +290,7 @@ void loop() {
    SHUT = false;
   };
 
-  while (SHUT = true) {
+  while (SHUT == true) {
     lcd.clear();
     lcd.setCursor(0,0);
     lcd.print("XXXXX SHUT XXXXX");
