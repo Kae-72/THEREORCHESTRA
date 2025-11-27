@@ -74,13 +74,17 @@ int BUZZER = 10;
 int BOTON_D = 9;
 int BOTON_A = 8;
 
+int buttonAfilter = 0;
+int buttonBfilter = 0;
+int buttonCfilter = 0;
+int buttonDfilter = 0;
+bool d_toggle = false;
+bool songplaying = false;
+bool a_toggle = false;
+bool SHUT = false;
+bool SHUTFILTER = true;
+
 void setup() {
-  buttonAfilter = 0;
-  buttonBfilter = 0;
-  buttonCfilter = 0;
-  buttonDfilter = 0;
-  bool d_toggle = false;
-  bool songplaying = false;
   lcd.init();
   lcd.backlight();
   lcd.createChar(0, single);
@@ -94,8 +98,6 @@ void setup() {
   pinMode(BOTON_D, INPUT_PULLUP);
   pinMode(BOTON_A, INPUT_PULLUP);
   Serial.begin(115200);
-  digitalWrite(BOTON_D, LOW);
-  digitalWrite(BOTON_A, LOW);
 }
 
 void loop() {
@@ -178,46 +180,46 @@ void loop() {
 // console to read the values 
 
 //DEFAULT SCREEN REFRESH PRINTER-------------------------------------------------------------------------------------------------------------------//
-  if (DEFAULT) {
-    lcd.clear();
-    lcd.setCursor(1,0);
-    lcd.write(0);
-    lcd.print("NOTES");
-    lcd.write(4);
-    lcd.print("OCTAVE");
-    lcd.write(0);
-    lcd.setCursor(4,1);
-    lcd.print(NOTE);
-    lcd.setCursor(10,1);
-    lcd.print(OCTAVE);
-    lcd.setCursor(14,1);
-  };
+  
+  lcd.clear();
+  lcd.setCursor(1,0);
+  lcd.write(0);
+  lcd.print("NOTES");
+  lcd.write(4);
+  lcd.print("OCTAVE");
+  lcd.write(1);
+  lcd.setCursor(4,1);
+  lcd.print(NOTE);
+  lcd.setCursor(10,1);
+  lcd.print(OCTAVE);
+  lcd.setCursor(14,1);
+
 // lcd screen printer
 
   delay (QUARTER*0.8);
 
 //BOTONES--------------------------------------------------------------------------------------------------------------------------------------------//
-//Debug song/songs (D)-------------------------------------------------------------------------------------------------------------------------------//
-  if (digitalRead(BOTON_D) == HIGH) {
-  DEBUG = true;
-  }else {
-   DEBUG = false;
+//SHUTUP button to shut it up(A)----------------------------------------------------------------------------------------------------------------------//
+  if (digitalRead(BOTON_A) == LOW) {
+    buttonAfilter += 1;
+  }
+
+  if (buttonAfilter > 5) {
+    a_toggle = !a_toggle;
+    buttonAfilter = 0;
   };
 
-  while (DEBUG == true) {
-    lcd.clear();
-    lcd.setCursor(0,0);
-    lcd.print("DEBUGGING WITH...");
-    lcd.setCursor(0,1);
-    lcd.print("Song of Storms");
-    lcd.write(0);
+  if (buttonAfilter > 5 && SHUTFILTER == true) {
+    a_toggle = !a_toggle;
+    buttonAfilter = 0;
   };
- 
-//SHUTUP button to shut it up(A)----------------------------------------------------------------------------------------------------------------------//
-  if (digitalRead(BOTON_A) == HIGH) {
-  SHUT = true;
-  }else {
-   SHUT = false;
+
+  if (a_toggle == true){
+    SHUT = true;
+  };
+
+  if (a_toggle == false){
+    SHUT = false;
   };
 
   while (SHUT == true) {
@@ -227,104 +229,105 @@ void loop() {
     lcd.setCursor(0,1);
     lcd.print("XXXXXX UP XXXXXX");
     pinMode(BUZZER,INPUT);
-  };
-
+    delay(200);
+    SHUTFILTER = true;
+  }
 
 //NEW BUTTON D CODE----------------------------------------------------------------------------------------------//
   if (digitalRead(BOTON_D) == LOW){
-    button1filter + 1;
+    buttonDfilter += 1;
   }
-  if (button1filter > 200) {
+
+  if (buttonDfilter > 5) {
     d_toggle = !d_toggle;
-    button1filter = 0;
+    buttonDfilter = 0;
   }
 
-  if (d_toggle) {
-    songplayer()
+  while (d_toggle == true) {
+    songplayer();
   }
 
-  if (songsong == true && d_toggle = false) {
-    songsong = false
-  }
-
-//Sustainer mode-------------------------------------------------------------------------------------------------------------------------------------//
+  Serial.print(buttonDfilter);
+  Serial.print(buttonAfilter);
 }
 
 //REFERRED FUNCTIONS---------------------------------------------------------------------------------------------------------------------------------//
-void songplayer(){
-  if (songsong == false) {}
-    songsong = true
-    tone(BUZZER, NOTE_D4, SONGQUAR);
-    delay(SONGQUAR);
-    noTone(BUZZER);
-    tone(BUZZER, NOTE_F4, SONGQUAR);
-    delay(SONGQUAR);
-    noTone(BUZZER);
-    tone(BUZZER, NOTE_D4*2, SONGQUAR*4);
-    delay(SONGQUAR);
-    noTone(BUZZER);
-    tone(BUZZER, NOTE_D4, SONGQUAR);
-    delay(SONGQUAR);
-    noTone(BUZZER);
-    tone(BUZZER, NOTE_F4, SONGQUAR);
-    delay(SONGQUAR);
-    noTone(BUZZER);
-    tone(BUZZER, NOTE_D4*2, SONGQUAR*4);
-    delay(SONGQUAR);
-    noTone(BUZZER);
-    tone(BUZZER, NOTE_E4*2, SONGQUAR*5);
-    delay(SONGQUAR);
-    noTone(BUZZER);
-    tone(BUZZER, NOTE_F4*2, SONGQUAR);
-    delay(SONGQUAR);
-    noTone(BUZZER);
-    tone(BUZZER, NOTE_E4*2, SONGQUAR);
-    delay(SONGQUAR);
-    noTone(BUZZER);
-    tone(BUZZER, NOTE_F4*2, SONGQUAR);
-    delay(SONGQUAR);
-    noTone(BUZZER);
-    tone(BUZZER, NOTE_E4*2, SONGQUAR);
-    delay(SONGQUAR);
-    noTone(BUZZER);
-    tone(BUZZER, NOTE_C4*2, SONGQUAR*2);
-    delay(SONGQUAR);
-    noTone(BUZZER);
-    tone(BUZZER, NOTE_A4, SONGQUAR*4);
-    delay(SONGQUAR*2);
-    noTone(BUZZER);
-    tone(BUZZER, NOTE_A4, SONGQUAR*4);
-    delay(SONGQUAR);
-    noTone(BUZZER);
-    tone(BUZZER, NOTE_D4, SONGQUAR*4);
-    delay(SONGQUAR);
-    noTone(BUZZER);
-    tone(BUZZER, NOTE_F4, SONGQUAR);
-    delay(SONGQUAR);
-    noTone(BUZZER);
-    tone(BUZZER, NOTE_G4, SONGQUAR);
-    delay(SONGQUAR);
-    noTone(BUZZER);
-    tone(BUZZER, NOTE_A4, SONGQUAR*4);
-    delay(SONGQUAR*2);
-    noTone(BUZZER);
-    tone(BUZZER, NOTE_A4, SONGQUAR*4);
-    delay(SONGQUAR);
-    noTone(BUZZER);
-    tone(BUZZER, NOTE_D4, SONGQUAR*4);
-    delay(SONGQUAR);
-    noTone(BUZZER);
-    tone(BUZZER, NOTE_F4, SONGQUAR);
-    delay(SONGQUAR);
-    noTone(BUZZER);  
-    tone(BUZZER, NOTE_G4, SONGQUAR);
-    delay(SONGQUAR);
-    noTone(BUZZER);
-    tone(BUZZER, NOTE_E4, SONGQUAR*4);
-    delay(SONGQUAR*2);
-    noTone(BUZZER);
-    return;
-  }
+void songplayer() {
+  lcd.clear();
+  lcd.setCursor(0,0);
+  lcd.print("DEBUGGING WITH...");
+  lcd.setCursor(0,1);
+  lcd.print("Song of Storms");
+  lcd.write(0);
+  tone(BUZZER, NOTE_D4, SONGQUAR/2);
+  delay(SONGQUAR);
+  noTone(BUZZER);
+  tone(BUZZER, NOTE_F4, SONGQUAR/2);
+  delay(SONGQUAR);
+  noTone(BUZZER);
+  tone(BUZZER, NOTE_D4*2, SONGQUAR*4);
+  delay(SONGQUAR);
+  noTone(BUZZER);
+  tone(BUZZER, NOTE_D4, SONGQUAR/2);
+  delay(SONGQUAR);
+  noTone(BUZZER);
+  tone(BUZZER, NOTE_F4, SONGQUAR/2);
+  delay(SONGQUAR);
+  noTone(BUZZER);
+  tone(BUZZER, NOTE_D4*2, SONGQUAR*4);
+  delay(SONGQUAR);
+  noTone(BUZZER);
+  tone(BUZZER, NOTE_E4*2, SONGQUAR*5);
+  delay(SONGQUAR);
+  noTone(BUZZER);
+  tone(BUZZER, NOTE_F4*2, SONGQUAR/2);
+  delay(SONGQUAR);
+  noTone(BUZZER);
+  tone(BUZZER, NOTE_E4*2, SONGQUAR/2);
+  delay(SONGQUAR);
+  noTone(BUZZER);
+  tone(BUZZER, NOTE_F4*2, SONGQUAR/2);
+  delay(SONGQUAR);
+  noTone(BUZZER);
+  tone(BUZZER, NOTE_E4*2, SONGQUAR/2);
+  delay(SONGQUAR);
+  noTone(BUZZER);
+  tone(BUZZER, NOTE_C4*2, SONGQUAR*2);
+  delay(SONGQUAR);
+  noTone(BUZZER);
+  tone(BUZZER, NOTE_A4, SONGQUAR*4);
+  delay(SONGQUAR*3);
+  noTone(BUZZER);
+  tone(BUZZER, NOTE_A4, SONGQUAR*4);
+  delay(SONGQUAR);
+  noTone(BUZZER);
+  tone(BUZZER, NOTE_D4, SONGQUAR*3);
+  delay(SONGQUAR);
+  noTone(BUZZER);
+  tone(BUZZER, NOTE_F4, SONGQUAR/2);
+  delay(SONGQUAR);
+  noTone(BUZZER);
+  tone(BUZZER, NOTE_G4, SONGQUAR/2);
+  delay(SONGQUAR);
+  noTone(BUZZER);
+  tone(BUZZER, NOTE_A4, SONGQUAR*4);
+  delay(SONGQUAR*3);
+  noTone(BUZZER);
+  tone(BUZZER, NOTE_A4, SONGQUAR*4);
+  delay(SONGQUAR);
+  noTone(BUZZER);
+  tone(BUZZER, NOTE_D4, SONGQUAR*4);
+  delay(SONGQUAR);
+  noTone(BUZZER);
+  tone(BUZZER, NOTE_F4, SONGQUAR);
+  delay(SONGQUAR);
+  noTone(BUZZER);  
+  tone(BUZZER, NOTE_G4, SONGQUAR);
+  delay(SONGQUAR);
+  noTone(BUZZER);
+  tone(BUZZER, NOTE_E4, SONGQUAR*4);
+  delay(SONGQUAR*2);
+  noTone(BUZZER);
 }
 
 
