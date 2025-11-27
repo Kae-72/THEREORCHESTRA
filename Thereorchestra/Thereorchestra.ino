@@ -74,6 +74,8 @@ int BUZZER = 10;
 bool DEBUG = false;
 int BOTON_D = 9;
 
+bool SHUT = false;
+int BOTON_A = 8;
 
 void setup() {
 
@@ -88,8 +90,10 @@ void setup() {
   pinMode(A1, INPUT);
   pinMode(A2, INPUT);
   pinMode(BOTON_D, INPUT);
+  pinMode(BOTON_A, INPUT);
   Serial.begin(115200);
   digitalWrite(BOTON_D, LOW);
+  digitalWrite(BOTON_A, LOW);
 
 }
 
@@ -277,7 +281,6 @@ void loop() {
     tone(BUZZER, NOTE_E4, SONGQUAR*4);
     delay(SONGQUAR*2);
     noTone(BUZZER);
-    
   };
  
 //SHUTUP button to shut it up(A)----------------------------------------------------------------------------------------------------------------------//
@@ -294,7 +297,7 @@ void loop() {
     lcd.setCursor(0,1);
     lcd.print("XXXXXX UP XXXXXX");
     pinMode(BUZZER,INPUT);
-  }
+  };
 
 //Sustainer mode-------------------------------------------------------------------------------------------------------------------------------------//
 
