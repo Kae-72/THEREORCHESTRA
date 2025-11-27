@@ -13,6 +13,7 @@ int NOTE_C5 = 523;
 #include <LiquidCrystal_I2C.h>
 #include <Wire.h>
 LiquidCrystal_I2C lcd(0x27, 16, 2);
+
 byte single[8] = {
   B00000,
   B00110,
@@ -33,20 +34,59 @@ byte twoquart[8] = {
   B00000,
 };
 
+byte andsym[8] = {
+  B00100,
+  B01010,
+  B01010,
+  B00100,
+  B01010,
+  B01010,
+  B00101,
+};
+
+byte mas[8] = {
+  B00000,
+  B00000,
+  B00100,
+  B01110,
+  B00100,
+  B00000,
+  B00000,
+};
+
+byte guion[8] = {
+  B00000,
+  B00000,
+  B00000,
+  B01110,
+  B00000,
+  B00000,
+  B00000,
+};
+
 int CURRENT_NOTE = 0;
 int QUARTER = 250;
 int OCTAVER = 0;
 int BUZZER = 10;
 
+//BOTONES ESPECIALES
+bool DEBUG = false;
+int BOTON_D = 9;
+
+
 void setup() {
 
   lcd.init();
   lcd.backlight();
-  lcd.createChar(0, single); 
+  lcd.createChar(0, single);
   lcd.createChar(1, twoquart); 
+  lcd.createChar(2, andsym); 
+  lcd.createChar(3, mas); 
+  lcd.createChar(4, guion);
   pinMode(BUZZER, OUTPUT);
   pinMode(A1, INPUT);
   pinMode(A2, INPUT);
+  pinMode(BOTON_D, INPUT)
   Serial.begin(115200);
 
 }
@@ -85,7 +125,7 @@ void loop() {
 // possibly rearrange the values needed
 
   String NOTE = "";
-//PITCH CHANGER----------------------------------------------------------------------------------------------------------------------------------//
+//PITCH CHANGER------------------------------------------------------------------------------------------------------------------------------------//
   if (sensor1value <= 100) {
     NOTE = "";
     //CAMBIAR DESPUÉS A VACIO PARA LCD
@@ -131,25 +171,41 @@ void loop() {
   Serial.println(OCTAVE);
 // console to read the values 
 
-//DEFAULT SCREEN REFRESH PRINTER-----------------------------------------------------------------------------------------------------------------------------------//
+//DEFAULT SCREEN REFRESH PRINTER-------------------------------------------------------------------------------------------------------------------//
   if (DEFAULT) {
     lcd.clear();
-    lcd.print("");
-    lcd.write(1);
-    lcd.print("NOTES");
+    lcd.setCursor(1,0);
     lcd.write(0);
+    lcd.print("NOTES");
+    lcd.write(4);
     lcd.print("OCTAVE");
-    lcd.write(1);
-    lcd.print("");
-    lcd.setCursor(2,1);
+    lcd.write(0);
+    lcd.setCursor(4,1);
     lcd.print(NOTE);
-    lcd.setCursor(8,1);
+    lcd.setCursor(10,1);
     lcd.print(OCTAVE);
     lcd.setCursor(14,1);
   };
 // lcd screen printer
 
   delay (QUARTER*0.8);
+
+//BOTONES--------------------------------------------------------------------------------------------------------------------------------------------//
+//Debug song/songs (D)-------------------------------------------------------------------------------------------------------------------------------//
+ if (digitalWrite(BOTON_D) == HIGH) {
+  DEBUG = true
+ };
+
+ while (DEBUG = true) {
+  lcd.clear();
+  lcd.setCursor(0,0);
+  lcd.print("Song of Storms");
+  lcd.write(0);
+  lcd.
+ };
+ 
+
+
 }
 
 
