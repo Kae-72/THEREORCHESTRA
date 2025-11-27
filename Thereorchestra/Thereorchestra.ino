@@ -10,14 +10,28 @@ int NOTE_B4 = 494;
 int NOTE_C5 = 523;
 //NOTES
 
-// const int N = 100;
-// int buffer[N];
-// int indexBuffer = 0;
-// long addup = 0;
-// bool full = false;
+#include <LiquidCrystal_I2C.h>
+#include <Wire.h>
+LiquidCrystal_I2C lcd(0x27, 16, 2);
+byte single[8] = {
+  B00000,
+  B00110,
+  B00100,
+  B00100,
+  B01100,
+  B01100,
+  B00000,
+};
 
-#include <LiquidCrystal.h>
-
+byte twoquart[8] = {
+  B00000,
+  B01111,
+  B01001,
+  B01001,
+  B11011,
+  B11011,
+  B00000,
+};
 
 int CURRENT_NOTE = 0;
 int QUARTER = 250;
@@ -26,7 +40,10 @@ int BUZZER = 10;
 
 void setup() {
 
-
+  lcd.init();
+  lcd.backlight();
+  lcd.createChar(0, single); 
+  lcd.createChar(1, twoquart); 
   pinMode(BUZZER, OUTPUT);
   pinMode(A1, INPUT);
   pinMode(A2, INPUT);
@@ -34,28 +51,8 @@ void setup() {
 
 }
 
+
 void loop() {
-
-//start of the buffer
-  // if (full) {
-  //   addup -= buffer[indexBuffer];
-  // }
-
-  // buffer[indexBuffer] = sensor1value;
-
-  // addup += sensor1value;
-
-  // indexBuffer = (indexBuffer + 1) % N;
-
-  // if (indexBuffer == 0) {
-  //   full = true;
-  // }
-
-  // if (full) {
-  //   float promedio = addup / (float)N;
-
-  //}
-//end of the buffer
 
 //SENSOR 1 (pitch changer)
   int sensor1value = analogRead(A1);
@@ -64,29 +61,33 @@ void loop() {
 
   String OCTAVE = "";
 //OCTAVE CHANGER----------------------------------------------------------------------------------------------------------------------------------//
-  if (sensor2value >= 520) {
-    OCTAVER = 1;
-    OCTAVE = "4";
-  }
-  else if (sensor2value >= 320) {
-    OCTAVER = 2;
-    OCTAVE = "5";
-  }
-  else if (sensor2value >= 120) {
-    OCTAVER = 4;
-    OCTAVE = "6";
-  }
-  else {
+  
+  if (sensor2value < 120) {
     OCTAVER = 0;
-    OCTAVE = "NO OCTAVE";
+    OCTAVE = "";
+    pinMode(BUZZER, INPUT);
     //CAMBIAR DESPUÉS A VACIO PARA LCD
+  } else {
+    pinMode(BUZZER, OUTPUT);
+    if (sensor2value >= 530) {
+    OCTAVER = 1;
+    OCTAVE = "04";
+    }
+    else if (sensor2value >= 330) {
+    OCTAVER = 2;
+    OCTAVE = "05";
+    }
+    else if (sensor2value >= 130) {
+    OCTAVER = 4;
+    OCTAVE = "06";
+    }
   } 
 // possibly rearrange the values needed
 
   String NOTE = "";
 //PITCH CHANGER----------------------------------------------------------------------------------------------------------------------------------//
   if (sensor1value <= 100) {
-    NOTE = "NO NOTE";
+    NOTE = "";
     //CAMBIAR DESPUÉS A VACIO PARA LCD
     pinMode(BUZZER, INPUT);
   } else {
@@ -129,6 +130,24 @@ void loop() {
   Serial.print("OCTAVE: ");
   Serial.println(OCTAVE);
 // console to read the values 
+
+//DEFAULT SCREEN REFRESH PRINTER-----------------------------------------------------------------------------------------------------------------------------------//
+  if (DEFAULT) {
+    lcd.clear();
+    lcd.print("");
+    lcd.write(1);
+    lcd.print("NOTES");
+    lcd.write(0);
+    lcd.print("OCTAVE");
+    lcd.write(1);
+    lcd.print("");
+    lcd.setCursor(2,1);
+    lcd.print(NOTE);
+    lcd.setCursor(8,1);
+    lcd.print(OCTAVE);
+    lcd.setCursor(14,1);
+  };
+// lcd screen printer
 
   delay (QUARTER*0.8);
 }
