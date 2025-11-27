@@ -71,14 +71,16 @@ int OCTAVER = 0;
 int BUZZER = 10;
 
 //BOTONES ESPECIALES
-bool DEBUG = false;
 int BOTON_D = 9;
-
-bool SHUT = false;
 int BOTON_A = 8;
 
 void setup() {
-
+  buttonAfilter = 0;
+  buttonBfilter = 0;
+  buttonCfilter = 0;
+  buttonDfilter = 0;
+  bool d_toggle = false;
+  bool songplaying = false;
   lcd.init();
   lcd.backlight();
   lcd.createChar(0, single);
@@ -94,9 +96,7 @@ void setup() {
   Serial.begin(115200);
   digitalWrite(BOTON_D, LOW);
   digitalWrite(BOTON_A, LOW);
-
 }
-
 
 void loop() {
 
@@ -211,7 +211,49 @@ void loop() {
     lcd.setCursor(0,1);
     lcd.print("Song of Storms");
     lcd.write(0);
+  };
+ 
+//SHUTUP button to shut it up(A)----------------------------------------------------------------------------------------------------------------------//
+  if (digitalRead(BOTON_A) == HIGH) {
+  SHUT = true;
+  }else {
+   SHUT = false;
+  };
 
+  while (SHUT == true) {
+    lcd.clear();
+    lcd.setCursor(0,0);
+    lcd.print("XXXXX SHUT XXXXX");
+    lcd.setCursor(0,1);
+    lcd.print("XXXXXX UP XXXXXX");
+    pinMode(BUZZER,INPUT);
+  };
+
+
+//NEW BUTTON D CODE----------------------------------------------------------------------------------------------//
+  if (digitalRead(BOTON_D) == LOW){
+    button1filter + 1;
+  }
+  if (button1filter > 200) {
+    d_toggle = !d_toggle;
+    button1filter = 0;
+  }
+
+  if (d_toggle) {
+    songplayer()
+  }
+
+  if (songsong == true && d_toggle = false) {
+    songsong = false
+  }
+
+//Sustainer mode-------------------------------------------------------------------------------------------------------------------------------------//
+}
+
+//REFERRED FUNCTIONS---------------------------------------------------------------------------------------------------------------------------------//
+void songplayer(){
+  if (songsong == false) {}
+    songsong = true
     tone(BUZZER, NOTE_D4, SONGQUAR);
     delay(SONGQUAR);
     noTone(BUZZER);
@@ -274,35 +316,15 @@ void loop() {
     noTone(BUZZER);
     tone(BUZZER, NOTE_F4, SONGQUAR);
     delay(SONGQUAR);
-    noTone(BUZZER);
+    noTone(BUZZER);  
     tone(BUZZER, NOTE_G4, SONGQUAR);
     delay(SONGQUAR);
     noTone(BUZZER);
     tone(BUZZER, NOTE_E4, SONGQUAR*4);
     delay(SONGQUAR*2);
     noTone(BUZZER);
-  };
- 
-//SHUTUP button to shut it up(A)----------------------------------------------------------------------------------------------------------------------//
-  if (digitalRead(BOTON_A) == HIGH) {
-  SHUT = true;
-  }else {
-   SHUT = false;
-  };
-
-  while (SHUT == true) {
-    lcd.clear();
-    lcd.setCursor(0,0);
-    lcd.print("XXXXX SHUT XXXXX");
-    lcd.setCursor(0,1);
-    lcd.print("XXXXXX UP XXXXXX");
-    pinMode(BUZZER,INPUT);
-  };
-
-//Sustainer mode-------------------------------------------------------------------------------------------------------------------------------------//
-
-
-
+    return;
+  }
 }
 
 
