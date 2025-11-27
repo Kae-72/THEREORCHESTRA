@@ -168,19 +168,19 @@ void loop() {
 
 //VALUES PRINTER-----------------------------------------------------------------------------------------------------------------------------------//
   Serial.print("sensor1value: ");
-  Serial.println(sensor1value);
+  Serial.print(sensor1value);
   Serial.print('\t');
+  Serial.print("NOTE: ");
   Serial.print(NOTE);
   Serial.print('\t');
   Serial.print("sensor2value: ");
-  Serial.println(sensor2value);
+  Serial.print(sensor2value);
   Serial.print('\t');
   Serial.print("OCTAVE: ");
-  Serial.println(OCTAVE);
+  Serial.print(OCTAVE);
 // console to read the values 
 
 //DEFAULT SCREEN REFRESH PRINTER-------------------------------------------------------------------------------------------------------------------//
-  
   lcd.clear();
   lcd.setCursor(1,0);
   lcd.write(0);
@@ -193,7 +193,6 @@ void loop() {
   lcd.setCursor(10,1);
   lcd.print(OCTAVE);
   lcd.setCursor(14,1);
-
 // lcd screen printer
 
   delay (QUARTER*0.8);
@@ -204,33 +203,19 @@ void loop() {
     buttonAfilter += 1;
   }
 
-  if (buttonAfilter > 5) {
+  if (buttonAfilter > 2) {
     a_toggle = !a_toggle;
     buttonAfilter = 0;
-  };
+  }
 
-  if (buttonAfilter > 5 && SHUTFILTER == true) {
-    a_toggle = !a_toggle;
-    buttonAfilter = 0;
-  };
-
-  if (a_toggle == true){
-    SHUT = true;
-  };
-
-  if (a_toggle == false){
-    SHUT = false;
-  };
-
-  while (SHUT == true) {
+  while (a_toggle == true) {
     lcd.clear();
     lcd.setCursor(0,0);
     lcd.print("XXXXX SHUT XXXXX");
     lcd.setCursor(0,1);
     lcd.print("XXXXXX UP XXXXXX");
-    pinMode(BUZZER,INPUT);
+    pinMode(BUZZER,INPUT); 
     delay(200);
-    SHUTFILTER = true;
   }
 
 //NEW BUTTON D CODE----------------------------------------------------------------------------------------------//
@@ -238,7 +223,7 @@ void loop() {
     buttonDfilter += 1;
   }
 
-  if (buttonDfilter > 5) {
+  if (buttonDfilter > 2) {
     d_toggle = !d_toggle;
     buttonDfilter = 0;
   }
@@ -247,9 +232,8 @@ void loop() {
     songplayer();
   }
 
-  Serial.print(buttonDfilter);
-  Serial.print(buttonAfilter);
 }
+//EN OF LOOP;;;
 
 //REFERRED FUNCTIONS---------------------------------------------------------------------------------------------------------------------------------//
 void songplayer() {
