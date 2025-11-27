@@ -66,6 +66,7 @@ byte guion[8] = {
 
 int CURRENT_NOTE = 0;
 int QUARTER = 250;
+int SONGQUAR = 400;
 int OCTAVER = 0;
 int BUZZER = 10;
 
@@ -86,8 +87,9 @@ void setup() {
   pinMode(BUZZER, OUTPUT);
   pinMode(A1, INPUT);
   pinMode(A2, INPUT);
-  pinMode(BOTON_D, INPUT)
+  pinMode(BOTON_D, INPUT);
   Serial.begin(115200);
+  digitalWrite(BOTON_D, LOW);
 
 }
 
@@ -192,18 +194,110 @@ void loop() {
 
 //BOTONES--------------------------------------------------------------------------------------------------------------------------------------------//
 //Debug song/songs (D)-------------------------------------------------------------------------------------------------------------------------------//
- if (digitalWrite(BOTON_D) == HIGH) {
-  DEBUG = true
- };
+  if (digitalRead(BOTON_D) == HIGH) {
+  DEBUG = true;
+  }else {
+   DEBUG = false;
+  };
 
- while (DEBUG = true) {
-  lcd.clear();
-  lcd.setCursor(0,0);
-  lcd.print("Song of Storms");
-  lcd.write(0);
-  lcd.
- };
+  while (DEBUG = true) {
+    lcd.clear();
+    lcd.setCursor(0,0);
+    lcd.print("DEBUGGING WITH...");
+    lcd.setCursor(0,1);
+    lcd.print("Song of Storms");
+    lcd.write(0);
+
+    tone(BUZZER, NOTE_D4, SONGQUAR);
+    delay(SONGQUAR);
+    noTone(BUZZER);
+    tone(BUZZER, NOTE_F4, SONGQUAR);
+    delay(SONGQUAR);
+    noTone(BUZZER);
+    tone(BUZZER, NOTE_D4*2, SONGQUAR*4);
+    delay(SONGQUAR);
+    noTone(BUZZER);
+    tone(BUZZER, NOTE_D4, SONGQUAR);
+    delay(SONGQUAR);
+    noTone(BUZZER);
+    tone(BUZZER, NOTE_F4, SONGQUAR);
+    delay(SONGQUAR);
+    noTone(BUZZER);
+    tone(BUZZER, NOTE_D4*2, SONGQUAR*4);
+    delay(SONGQUAR);
+    noTone(BUZZER);
+    tone(BUZZER, NOTE_E4*2, SONGQUAR*5);
+    delay(SONGQUAR);
+    noTone(BUZZER);
+    tone(BUZZER, NOTE_F4*2, SONGQUAR);
+    delay(SONGQUAR);
+    noTone(BUZZER);
+    tone(BUZZER, NOTE_E4*2, SONGQUAR);
+    delay(SONGQUAR);
+    noTone(BUZZER);
+    tone(BUZZER, NOTE_F4*2, SONGQUAR);
+    delay(SONGQUAR);
+    noTone(BUZZER);
+    tone(BUZZER, NOTE_E4*2, SONGQUAR);
+    delay(SONGQUAR);
+    noTone(BUZZER);
+    tone(BUZZER, NOTE_C4*2, SONGQUAR*2);
+    delay(SONGQUAR);
+    noTone(BUZZER);
+    tone(BUZZER, NOTE_A4, SONGQUAR*4);
+    delay(SONGQUAR*2);
+    noTone(BUZZER);
+    tone(BUZZER, NOTE_A4, SONGQUAR*4);
+    delay(SONGQUAR);
+    noTone(BUZZER);
+    tone(BUZZER, NOTE_D4, SONGQUAR*4);
+    delay(SONGQUAR);
+    noTone(BUZZER);
+    tone(BUZZER, NOTE_F4, SONGQUAR);
+    delay(SONGQUAR);
+    noTone(BUZZER);
+    tone(BUZZER, NOTE_G4, SONGQUAR);
+    delay(SONGQUAR);
+    noTone(BUZZER);
+    tone(BUZZER, NOTE_A4, SONGQUAR*4);
+    delay(SONGQUAR*2);
+    noTone(BUZZER);
+    tone(BUZZER, NOTE_A4, SONGQUAR*4);
+    delay(SONGQUAR);
+    noTone(BUZZER);
+    tone(BUZZER, NOTE_D4, SONGQUAR*4);
+    delay(SONGQUAR);
+    noTone(BUZZER);
+    tone(BUZZER, NOTE_F4, SONGQUAR);
+    delay(SONGQUAR);
+    noTone(BUZZER);
+    tone(BUZZER, NOTE_G4, SONGQUAR);
+    delay(SONGQUAR);
+    noTone(BUZZER);
+    tone(BUZZER, NOTE_E4, SONGQUAR*4);
+    delay(SONGQUAR*2);
+    noTone(BUZZER);
+    
+  };
  
+//SHUTUP button to shut it up(A)----------------------------------------------------------------------------------------------------------------------//
+  if (digitalRead(BOTON_A) == HIGH) {
+  SHUT = true;
+  }else {
+   SHUT = false;
+  };
+
+  while (SHUT = true) {
+    lcd.clear();
+    lcd.setCursor(0,0);
+    lcd.print("XXXXX SHUT XXXXX");
+    lcd.setCursor(0,1);
+    lcd.print("XXXXXX UP XXXXXX");
+    pinMode(BUZZER,INPUT);
+  }
+
+//Sustainer mode-------------------------------------------------------------------------------------------------------------------------------------//
+
 
 
 }
