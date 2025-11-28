@@ -103,7 +103,7 @@ byte frec4[8] = {
   B01010,
   B01010,
   B11011,
-  B00000, 
+  B00000,
 };
 
 //DEFAULT VARIABLES NEEDED
@@ -134,8 +134,8 @@ void setup() {
   lcd.init();
   lcd.backlight();
   lcd.createChar(0, single);
-  lcd.createChar(1, twoquart); 
-  lcd.createChar(2, andsym); 
+  lcd.createChar(1, twoquart);
+  lcd.createChar(2, andsym);
   lcd.createChar(3, guion);
   lcd.createChar(4, frec1);
   lcd.createChar(5, frec2);
@@ -159,139 +159,139 @@ void loop() {
 
   String OCTAVE = "";
 //OCTAVE CHANGER----------------------------------------------------------------------------------------------------------------------------------//
-  // if (sensor2value < 120) {
-  //   OCTAVER = 0;
-  //   OCTAVE = "";
-  //   pinMode(BUZZER, INPUT);
-  // } else {
-  //   pinMode(BUZZER, OUTPUT);
-  //   if (sensor2value >= 530) {
-  //   OCTAVER = 1;
-  //   OCTAVE = "04";
-  //   }
-  //   else if (sensor2value >= 330) {
-  //   OCTAVER = 2;
-  //   OCTAVE = "05";
-  //   }
-  //   else if (sensor2value >= 130) {
-  //   OCTAVER = 4;
-  //   OCTAVE = "06";
-  //   }
-  // } 
-
   if (sensor2value < 120) {
     OCTAVER = 0;
     OCTAVE = "";
-    OCTAVER_COUNTER = 0;
     pinMode(BUZZER, INPUT);
   } else {
-    int POTENTIAL_OCTAVE = 0;
-    String POTENTIAL_OCTAVE_NAME = "";
     pinMode(BUZZER, OUTPUT);
     if (sensor2value >= 530) {
-    POTENTIAL_OCTAVE = 1;
-    POTENTIAL_OCTAVE_NAME = "04";
+    OCTAVER = 1;
+    OCTAVE = "04";
     }
     else if (sensor2value >= 330) {
-    POTENTIAL_OCTAVE = 2;
-    POTENTIAL_OCTAVE_NAME = "05";
+    OCTAVER = 2;
+    OCTAVE = "05";
     }
-    else if (sensor2value >= 120) {
-    POTENTIAL_OCTAVE = 4;
-    POTENTIAL_OCTAVE_NAME = "06";
+    else if (sensor2value >= 130) {
+    OCTAVER = 4;
+    OCTAVE = "06";
     }
+  }
 
-    if (POTENTIAL_OCTAVE == LAST_M_OCTAVE){
-      OCTAVER_COUNTER += 1;
-    } else {
-      OCTAVER_COUNTER = 0;
-      LAST_M_OCTAVE = POTENTIAL_OCTAVE;
-    }
+  // if (sensor2value < 120) {
+  //   OCTAVER = 0;
+  //   OCTAVE = "";
+  //   OCTAVER_COUNTER = 0;
+  //   pinMode(BUZZER, INPUT);
+  // } else {
+  //   int POTENTIAL_OCTAVE = 0;
+  //   String POTENTIAL_OCTAVE_NAME = "";
+  //   pinMode(BUZZER, OUTPUT);
+  //   if (sensor2value >= 530) {
+  //   POTENTIAL_OCTAVE = 1;
+  //   POTENTIAL_OCTAVE_NAME = "04";
+  //   }
+  //   else if (sensor2value >= 330) {
+  //   POTENTIAL_OCTAVE = 2;
+  //   POTENTIAL_OCTAVE_NAME = "05";
+  //   }
+  //   else if (sensor2value >= 120) {
+  //   POTENTIAL_OCTAVE = 4;
+  //   POTENTIAL_OCTAVE_NAME = "06";
+  //   }
 
-    if (OCTAVER_COUNTER >= 5) {
-      OCTAVER = POTENTIAL_OCTAVE;
-      OCTAVE = POTENTIAL_OCTAVE_NAME;
-    };
-  } 
+  //   if (POTENTIAL_OCTAVE == LAST_M_OCTAVE){
+  //     OCTAVER_COUNTER += 1;
+  //   } else {
+  //     OCTAVER_COUNTER = 0;
+  //     LAST_M_OCTAVE = POTENTIAL_OCTAVE;
+  //   }
+
+  //   if (OCTAVER_COUNTER >= 1) {
+  //     OCTAVER = POTENTIAL_OCTAVE;
+  //     OCTAVE = POTENTIAL_OCTAVE_NAME;
+  //   };
+  // }
 // possibly rearrange the values needed
 
   String NOTE = "";
 //PITCH CHANGER------------------------------------------------------------------------------------------------------------------------------------//
-  // if (sensor1value <= 100) {
-  //   NOTE = "";
-  //   pinMode(BUZZER, INPUT);
-  // } else {
-  //   pinMode(BUZZER, OUTPUT);
-  //   if (sensor1value >= 610) {
-  //     CURRENT_NOTE = NOTE_C4 * OCTAVER;
-  //     NOTE = "C";
-  //   } else if (sensor1value >= 525) {
-  //     CURRENT_NOTE = NOTE_D4 * OCTAVER;
-  //     NOTE = "D";
-  //   } else if (sensor1value >= 440) {
-  //     CURRENT_NOTE = NOTE_E4 * OCTAVER;
-  //     NOTE = "E";
-  //   } else if (sensor1value >= 355) {
-  //     CURRENT_NOTE = NOTE_F4 * OCTAVER;
-  //     NOTE = "F";
-  //   } else if (sensor1value >= 270) {
-  //     CURRENT_NOTE = NOTE_G4 * OCTAVER;
-  //     NOTE = "G";
-  //   } else if (sensor1value >= 185) {
-  //     CURRENT_NOTE = NOTE_A4 * OCTAVER;
-  //     NOTE = "A";
-  //   } else if (sensor1value >= 100) {
-  //     CURRENT_NOTE = NOTE_B4 * OCTAVER;
-  //     NOTE = "B";
-  //   }
-  //   tone(BUZZER,CURRENT_NOTE,QUARTER);
-  // }
-
   if (sensor1value <= 100) {
     NOTE = "";
     pinMode(BUZZER, INPUT);
-    NOTE_COUNTER = 0;
   } else {
     pinMode(BUZZER, OUTPUT);
-    int POTENTIAL_NOTE = 0;
-    String POTENTIAL_NOTE_NAME = "";
     if (sensor1value >= 610) {
-      POTENTIAL_NOTE = NOTE_C4;
-      POTENTIAL_NOTE_NAME = "C";
+      CURRENT_NOTE = NOTE_C4 * OCTAVER;
+      NOTE = "C";
     } else if (sensor1value >= 525) {
-      POTENTIAL_NOTE = NOTE_D4;
-      POTENTIAL_NOTE_NAME = "D";
+      CURRENT_NOTE = NOTE_D4 * OCTAVER;
+      NOTE = "D";
     } else if (sensor1value >= 440) {
-      POTENTIAL_NOTE = NOTE_E4;
-      POTENTIAL_NOTE_NAME = "E";
+      CURRENT_NOTE = NOTE_E4 * OCTAVER;
+      NOTE = "E";
     } else if (sensor1value >= 355) {
-      POTENTIAL_NOTE = NOTE_F4;
-      POTENTIAL_NOTE_NAME = "F";
+      CURRENT_NOTE = NOTE_F4 * OCTAVER;
+      NOTE = "F";
     } else if (sensor1value >= 270) {
-      POTENTIAL_NOTE = NOTE_G4;
-      POTENTIAL_NOTE_NAME = "G";
+      CURRENT_NOTE = NOTE_G4 * OCTAVER;
+      NOTE = "G";
     } else if (sensor1value >= 185) {
-      POTENTIAL_NOTE = NOTE_A4;
-      POTENTIAL_NOTE_NAME = "A";
+      CURRENT_NOTE = NOTE_A4 * OCTAVER;
+      NOTE = "A";
     } else if (sensor1value >= 100) {
-      POTENTIAL_NOTE = NOTE_B4;
-      POTENTIAL_NOTE_NAME = "B";
-    };
-     
-    if (POTENTIAL_NOTE == LAST_M_NOTE) {
-      NOTE_COUNTER += 1;
-    } else {
-      NOTE_COUNTER = 0;
-      LAST_M_NOTE = POTENTIAL_NOTE;
-    };
-
-    if (NOTE_COUNTER >= 5) {
-      CURRENT_NOTE = POTENTIAL_NOTE * OCTAVER;
-      NOTE = POTENTIAL_NOTE_NAME;
-    };
-
-    tone(BUZZER, CURRENT_NOTE, QUARTER);
+      CURRENT_NOTE = NOTE_B4 * OCTAVER;
+      NOTE = "B";
+    }
+    tone(BUZZER,CURRENT_NOTE,QUARTER);
   }
+
+  // if (sensor1value <= 100) {
+  //   NOTE = "";
+  //   pinMode(BUZZER, INPUT);
+  //   NOTE_COUNTER = 0;
+  // } else {
+  //   pinMode(BUZZER, OUTPUT);
+  //   int POTENTIAL_NOTE = 0;
+  //   String POTENTIAL_NOTE_NAME = "";
+  //   if (sensor1value >= 610) {
+  //     POTENTIAL_NOTE = NOTE_C4;
+  //     POTENTIAL_NOTE_NAME = "C";
+  //   } else if (sensor1value >= 525) {
+  //     POTENTIAL_NOTE = NOTE_D4;
+  //     POTENTIAL_NOTE_NAME = "D";
+  //   } else if (sensor1value >= 440) {
+  //     POTENTIAL_NOTE = NOTE_E4;
+  //     POTENTIAL_NOTE_NAME = "E";
+  //   } else if (sensor1value >= 355) {
+  //     POTENTIAL_NOTE = NOTE_F4;
+  //     POTENTIAL_NOTE_NAME = "F";
+  //   } else if (sensor1value >= 270) {
+  //     POTENTIAL_NOTE = NOTE_G4;
+  //     POTENTIAL_NOTE_NAME = "G";
+  //   } else if (sensor1value >= 185) {
+  //     POTENTIAL_NOTE = NOTE_A4;
+  //     POTENTIAL_NOTE_NAME = "A";
+  //   } else if (sensor1value >= 100) {
+  //     POTENTIAL_NOTE = NOTE_B4;
+  //     POTENTIAL_NOTE_NAME = "B";
+  //   };
+
+  //   if (POTENTIAL_NOTE == LAST_M_NOTE) {
+  //     NOTE_COUNTER += 1;
+  //   } else {
+  //     NOTE_COUNTER = 0;
+  //     LAST_M_NOTE = POTENTIAL_NOTE;
+  //   };
+
+  //   if (NOTE_COUNTER >= 1) {
+  //     CURRENT_NOTE = POTENTIAL_NOTE * OCTAVER;
+  //     NOTE = POTENTIAL_NOTE_NAME;
+  //   };
+
+  //   tone(BUZZER, CURRENT_NOTE, QUARTER);
+  // }
 // possibly rearrange the values
 
 //DEFAULT SCREEN REFRESH PRINTER-------------------------------------------------------------------------------------------------------------------//
@@ -321,7 +321,7 @@ void loop() {
   Serial.print('\t');
   Serial.println("OCTAVE: ");
   Serial.print(OCTAVE);
-// console to read the values 
+// console to read the values
 
   delay (QUARTER*0.8);
 
@@ -342,7 +342,7 @@ void loop() {
     lcd.print("XXXXX SHUT XXXXX");
     lcd.setCursor(0,1);
     lcd.print("XXXXXX UP XXXXXX");
-    pinMode(BUZZER,INPUT); 
+    pinMode(BUZZER,INPUT);
     delay(200);
   }
 
@@ -364,7 +364,7 @@ void loop() {
   if (digitalRead(BOTON_C) == LOW){
     buttonCfilter += 1;
   }
-  
+
   if (buttonCfilter >2) {
     c_toggle = !c_toggle;
     buttonCfilter = 0;
@@ -448,7 +448,7 @@ void songplayer() {
   noTone(BUZZER);
   tone(BUZZER, NOTE_F4, SONGQUAR);
   delay(SONGQUAR);
-  noTone(BUZZER);  
+  noTone(BUZZER);
   tone(BUZZER, NOTE_G4, SONGQUAR);
   delay(SONGQUAR);
   noTone(BUZZER);
@@ -461,7 +461,7 @@ void songplayer() {
 void freqspecial() {
   int FREQ = 0;
   int sensor1value = analogRead(A1);
-  
+
 
   if (sensor1value <= 100) {
     pinMode(BUZZER, INPUT);
