@@ -114,7 +114,8 @@ int OCTAVER = 0;
 int BUZZER = 10;
 int NOTE_COUNTER = 0;
 int LAST_M_NOTE = 0;
-
+int OCTAVER_COUNTER = 0;
+int LAST_M_OCTAVE = 0;
 
 //BOTONES ESPECIALES
 int BOTON_D = 9;
@@ -158,74 +159,140 @@ void loop() {
 
   String OCTAVE = "";
 //OCTAVE CHANGER----------------------------------------------------------------------------------------------------------------------------------//
-  
+  // if (sensor2value < 120) {
+  //   OCTAVER = 0;
+  //   OCTAVE = "";
+  //   pinMode(BUZZER, INPUT);
+  // } else {
+  //   pinMode(BUZZER, OUTPUT);
+  //   if (sensor2value >= 530) {
+  //   OCTAVER = 1;
+  //   OCTAVE = "04";
+  //   }
+  //   else if (sensor2value >= 330) {
+  //   OCTAVER = 2;
+  //   OCTAVE = "05";
+  //   }
+  //   else if (sensor2value >= 130) {
+  //   OCTAVER = 4;
+  //   OCTAVE = "06";
+  //   }
+  // } 
+
   if (sensor2value < 120) {
     OCTAVER = 0;
     OCTAVE = "";
+    OCTAVER_COUNTER = 0;
     pinMode(BUZZER, INPUT);
   } else {
+    int POTENTIAL_OCTAVE = 0;
+    String POTENTIAL_OCTAVE_NAME = "";
     pinMode(BUZZER, OUTPUT);
     if (sensor2value >= 530) {
-    OCTAVER = 1;
-    OCTAVE = "04";
+    POTENTIAL_OCTAVE = 1;
+    POTENTIAL_OCTAVE_NAME = "04";
     }
     else if (sensor2value >= 330) {
-    OCTAVER = 2;
-    OCTAVE = "05";
+    POTENTIAL_OCTAVE = 2;
+    POTENTIAL_OCTAVE_NAME = "05";
     }
-    else if (sensor2value >= 130) {
-    OCTAVER = 4;
-    OCTAVE = "06";
+    else if (sensor2value >= 120) {
+    POTENTIAL_OCTAVE = 4;
+    POTENTIAL_OCTAVE_NAME = "06";
     }
+
+    if (POTENTIAL_OCTAVE == LAST_M_OCTAVE){
+      OCTAVER_COUNTER += 1;
+    } else {
+      OCTAVER_COUNTER = 0;
+      LAST_M_OCTAVE = POTENTIAL_OCTAVE;
+    }
+
+    if (OCTAVER_COUNTER >= 5) {
+      OCTAVER = POTENTIAL_OCTAVE;
+      OCTAVE = POTENTIAL_OCTAVE_NAME;
+    };
   } 
 // possibly rearrange the values needed
 
   String NOTE = "";
 //PITCH CHANGER------------------------------------------------------------------------------------------------------------------------------------//
+  // if (sensor1value <= 100) {
+  //   NOTE = "";
+  //   pinMode(BUZZER, INPUT);
+  // } else {
+  //   pinMode(BUZZER, OUTPUT);
+  //   if (sensor1value >= 610) {
+  //     CURRENT_NOTE = NOTE_C4 * OCTAVER;
+  //     NOTE = "C";
+  //   } else if (sensor1value >= 525) {
+  //     CURRENT_NOTE = NOTE_D4 * OCTAVER;
+  //     NOTE = "D";
+  //   } else if (sensor1value >= 440) {
+  //     CURRENT_NOTE = NOTE_E4 * OCTAVER;
+  //     NOTE = "E";
+  //   } else if (sensor1value >= 355) {
+  //     CURRENT_NOTE = NOTE_F4 * OCTAVER;
+  //     NOTE = "F";
+  //   } else if (sensor1value >= 270) {
+  //     CURRENT_NOTE = NOTE_G4 * OCTAVER;
+  //     NOTE = "G";
+  //   } else if (sensor1value >= 185) {
+  //     CURRENT_NOTE = NOTE_A4 * OCTAVER;
+  //     NOTE = "A";
+  //   } else if (sensor1value >= 100) {
+  //     CURRENT_NOTE = NOTE_B4 * OCTAVER;
+  //     NOTE = "B";
+  //   }
+  //   tone(BUZZER,CURRENT_NOTE,QUARTER);
+  // }
+
   if (sensor1value <= 100) {
     NOTE = "";
     pinMode(BUZZER, INPUT);
+    NOTE_COUNTER = 0;
   } else {
     pinMode(BUZZER, OUTPUT);
+    int POTENTIAL_NOTE = 0;
+    String POTENTIAL_NOTE_NAME = "";
     if (sensor1value >= 610) {
-      CURRENT_NOTE = NOTE_C4 * OCTAVER;
-      NOTE = "C";
+      POTENTIAL_NOTE = NOTE_C4;
+      POTENTIAL_NOTE_NAME = "C";
     } else if (sensor1value >= 525) {
-      CURRENT_NOTE = NOTE_D4 * OCTAVER;
-      NOTE = "D";
+      POTENTIAL_NOTE = NOTE_D4;
+      POTENTIAL_NOTE_NAME = "D";
     } else if (sensor1value >= 440) {
-      CURRENT_NOTE = NOTE_E4 * OCTAVER;
-      NOTE = "E";
+      POTENTIAL_NOTE = NOTE_E4;
+      POTENTIAL_NOTE_NAME = "E";
     } else if (sensor1value >= 355) {
-      CURRENT_NOTE = NOTE_F4 * OCTAVER;
-      NOTE = "F";
+      POTENTIAL_NOTE = NOTE_F4;
+      POTENTIAL_NOTE_NAME = "F";
     } else if (sensor1value >= 270) {
-      CURRENT_NOTE = NOTE_G4 * OCTAVER;
-      NOTE = "G";
+      POTENTIAL_NOTE = NOTE_G4;
+      POTENTIAL_NOTE_NAME = "G";
     } else if (sensor1value >= 185) {
-      CURRENT_NOTE = NOTE_A4 * OCTAVER;
-      NOTE = "A";
+      POTENTIAL_NOTE = NOTE_A4;
+      POTENTIAL_NOTE_NAME = "A";
     } else if (sensor1value >= 100) {
-      CURRENT_NOTE = NOTE_B4 * OCTAVER;
-      NOTE = "B";
-    }
-    tone(BUZZER,CURRENT_NOTE,QUARTER);
-  }
-// possibly rearrange the values again
+      POTENTIAL_NOTE = NOTE_B4;
+      POTENTIAL_NOTE_NAME = "B";
+    };
+     
+    if (POTENTIAL_NOTE == LAST_M_NOTE) {
+      NOTE_COUNTER += 1;
+    } else {
+      NOTE_COUNTER = 0;
+      LAST_M_NOTE = POTENTIAL_NOTE;
+    };
 
-//VALUES PRINTER-----------------------------------------------------------------------------------------------------------------------------------//
-  Serial.print("sensor1value: ");
-  Serial.print(sensor1value);
-  Serial.print('\t');
-  Serial.println("NOTE: ");
-  Serial.print(NOTE);
-  Serial.print('\t');
-  Serial.println("sensor2value: ");
-  Serial.print(sensor2value);
-  Serial.print('\t');
-  Serial.println("OCTAVE: ");
-  Serial.print(OCTAVE);
-// console to read the values 
+    if (NOTE_COUNTER >= 5) {
+      CURRENT_NOTE = POTENTIAL_NOTE * OCTAVER;
+      NOTE = POTENTIAL_NOTE_NAME;
+    };
+
+    tone(BUZZER, CURRENT_NOTE, QUARTER);
+  }
+// possibly rearrange the values
 
 //DEFAULT SCREEN REFRESH PRINTER-------------------------------------------------------------------------------------------------------------------//
   lcd.clear();
@@ -241,6 +308,20 @@ void loop() {
   lcd.print(OCTAVE);
   lcd.setCursor(14,1);
 // lcd screen printer
+
+//VALUES PRINTER-----------------------------------------------------------------------------------------------------------------------------------//
+  Serial.print("sensor1value: ");
+  Serial.print(sensor1value);
+  Serial.print('\t');
+  Serial.println("NOTE: ");
+  Serial.print(NOTE);
+  Serial.print('\t');
+  Serial.println("sensor2value: ");
+  Serial.print(sensor2value);
+  Serial.print('\t');
+  Serial.println("OCTAVE: ");
+  Serial.print(OCTAVE);
+// console to read the values 
 
   delay (QUARTER*0.8);
 
@@ -286,7 +367,7 @@ void loop() {
   
   if (buttonCfilter >2) {
     c_toggle = !c_toggle;
-    buttonDfilter = 0;
+    buttonCfilter = 0;
   }
 
   while (c_toggle == true) {
